@@ -5,7 +5,11 @@ try {
 } catch (Exception $e) {
     die('Erreur : ' . $e->getMessage());
 }
-session_start();
+if (session_status() == PHP_SESSION_NONE)
+    session_start();
+if (!isset($_SESSION['logged'])){
+    $_SESSION['logged'] = FALSE;
+}
 ?>
 <html lang="fr">
 <head>

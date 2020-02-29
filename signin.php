@@ -50,7 +50,7 @@ include_once("header.php")
 <body class="text-center">
 <div id="formDiv" class="form-signin">
     <img class="mb-4" src="/docs/4.4/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-    <h1 class="h3 mb-3 font-weight-normal">Veuillez vous connectez</h1>
+    <h1 class="h3 mb-3 font-weight-normal">Veuillez vous connecter</h1>
     <div id="emailDiv">
         <label for="inputEmail" class="sr-only">Pseudo ou addresse email</label>
         <input type="text" id="inputEmail" class="form-control" placeholder="Email address" >
