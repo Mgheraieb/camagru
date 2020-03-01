@@ -1,7 +1,7 @@
 <?php
 include_once("header.php");
 include_once ("Request/imgLC.php");
-
+redirectUserLog();
 function displayPicture($idImg, $link , $owner, $bdd){
     $nbLike = countImageLike($idImg, $bdd);
     $like = (imageAlreadyLiked($idImg, $bdd) == true) ? "unlike" : "like";

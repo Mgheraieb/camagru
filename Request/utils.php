@@ -22,7 +22,8 @@ function logUser($email, $username, $pass, $bdd){
     }else{
         $_SESSION['idUser'] = $result['id'];
         $_SESSION['logged'] = TRUE;
-        redirectError("../index.php", 0);
+
+        header('LOCATION:../index.php');
     }
 }
 
