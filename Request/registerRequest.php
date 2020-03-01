@@ -51,24 +51,5 @@ function registerUser($mail, $name, $pswd, $bdd){
     logUser($mail, $name, $pswd, $bdd);
 }
 
-function userExist($mail, $username, $bdd){
-    $req = $bdd->prepare('SELECT * FROM user WHERE name = ? OR mail = ?');
-    $req->execute(array($username, $mail));
-    $result = $req->fetch();
-    $error = false;
-    print_r($result);
-    if ($result['name'] == $username)
-    {
-        $error='?name='.$username;
-    }
-    if ($result['mail'] == $mail){
-        if ($error == false)
-            $error='?mail='.$mail;
-        else{
-            $error.='&mail='.$mail;
-        }
-    }
-    $req->closeCursor();
-    return $error;
-}
+
 ?>

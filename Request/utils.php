@@ -20,10 +20,59 @@ function logUser($email, $username, $pass, $bdd){
     {
         return false;
     }else{
-        $_SESSION['id'] = $result['id'];
+        $_SESSION['idUser'] = $result['id'];
         $_SESSION['logged'] = TRUE;
         redirectError("../index.php", 0);
     }
+}
+
+
+function userExistID($id, $bdd)
+{
+    $req = $bdd->prepare('SELECT id FROM user WHERE id = ?');
+    $req->execute(array($id));
+    $result = $req->fetch();
+    $req->closeCursor();
+    return ($result != false);
+}
+
+
+function imageExistID($id, $bdd)
+{
+    $req = $bdd->prepare('SELECT id FROM picture WHERE id = ?');
+    $req->execute(array($id));
+    $result = $req->fetch();
+    $req->closeCursor();
+    return ($result != false);
+}
+
+function getImageOwnerId($idImg, $bdd){
+    $req = $bdd->prepare('SELECT owner_id FROM picture WHERE id = ?');
+    $req->execute(array($idImg));
+    $result = $req->fetch();
+    $req->closeCursor();
+    return $result['owner_id'];
+
+}
+
+function userExist($mail, $username, $bdd){
+    $req = $bdd->prepare('SELECT * FROM user WHERE name = ? OR mail = ?');
+    $req->execute(array($username, $mail));
+    $result = $req->fetch();
+    $error = false;
+    if ($result['name'] == $username)
+    {
+        $error='?name='.$username;
+    }
+    if ($result['mail'] == $mail){
+        if ($error == false)
+            $error='?mail='.$mail;
+        else{
+            $error.='&mail='.$mail;
+        }
+    }
+    $req->closeCursor();
+    return $error;
 }
 
 
