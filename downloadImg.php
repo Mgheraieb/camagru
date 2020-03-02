@@ -1,6 +1,8 @@
 
 <?php
-if (!isset($_POST['img']))
+include_once("header.php");
+include_once ("Request/utils.php");
+if (!isset($_POST['img']) || !isset($_SESSION['idUser']))
     echo "<script>window.close();</script>";
 $pic = $_POST['img'];
 print_r(var_dump($_FILES));
@@ -16,6 +18,29 @@ if (!file_exists($file)) {
 
 $file = $file . uniqid() . '.png';
 $destination = imagecreatefrompng($pic);
-imagepng($destination, $file);
+
+if (imagepng($destination, $file) == false){
     echo "<script>window.close();</script>";
+}else{
+    $link = $file;
+    addPicture($link, $bdd);
+}
+
+
+function addPicture($filename, $bdd){
+    $id = (userExistID($_SESSION['idUser'], $bdd));
+    if ($id == false){
+        return false;
+    }$id =$_SESSION['idUser'];
+    try{
+        $req = $bdd->prepare('INSERT INTO picture(owner_id, link) VALUES(?,?)');
+        $req->execute(array($id,$filename));
+    }catch (Exception $e){
+
+    }
+}
+
+echo "<script>window.close();</script>";
+
+
 ?>

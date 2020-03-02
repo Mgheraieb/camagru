@@ -20,7 +20,8 @@ function displayPicture($idImg, $link , $owner, $bdd){
         if (canLikeImg($idImg, $bdd) == true && getImageOwnerId($owner,$bdd) != $_SESSION['idUser'])
                       echo  '<button type="submit" id="img'.$idImg.'" onclick="likeImage(this)" value="'.$idImg.'"name="'.$like.'" class="btn btn-sm btn-outline-secondary">'.$like.'</button>';
 
-echo '<button type="submit" class="btn btn-sm btn-outline-secondary" name="comment">Comment</button>
+
+    echo '<a href="./imgDetail.php?idImg='.$idImg.'"><button type="button" class="btn text-light bg-dark ">Commenter</button></a>
                     </div>
                     <div>
                     <small class="text-muted">'.$nbLike.' like</small>
@@ -44,7 +45,7 @@ function getImageOwner($idOwner, $bdd){
 }
 
 function loadImage($bdd){
-    $req = $bdd->query('SELECT * FROM picture');
+    $req = $bdd->query('SELECT * FROM picture ORDER BY date_post DESC ');
     while ($result = $req->fetch()){
         $ownerName = getImageOwner($result['owner_id'], $bdd);
         displayPicture($result['id'], $result['link'], $ownerName, $bdd);

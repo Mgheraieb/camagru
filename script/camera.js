@@ -23,6 +23,7 @@ camButton.addEventListener("click", ()=>{
 
 
 let startCamera = () =>{
+
     if (navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(function (stream) {
@@ -34,6 +35,19 @@ let startCamera = () =>{
     }
 
 }
+
+
+    var url = new URL(window.location);
+    var params = new URLSearchParams(url.search);
+    let success = params.get("s")
+    if (success == "1") {
+        let text = "Felicitation votre image est desormais disponible";
+        let div = document.createElement("p")
+        div.className = "alert alert-success"
+        div.role = "alert";
+        div.innerHTML = text;
+        camButton.before(div);
+    }
 
 let addElement = () =>{
     let link = document.createElement('a');
@@ -53,13 +67,14 @@ let addElement = () =>{
     }, false);
 
 
+
     video.addEventListener('canplay', function(ev){
-            height = video.videoHeight / (video.videoWidth/width);
-            video.setAttribute('width', width);
-            video.setAttribute('height', height);
-            canvas.setAttribute('width', width);
-            canvas.setAttribute('height', height);
-            streaming = true;
+        height = video.videoHeight / (video.videoWidth/width);
+        video.setAttribute('width', width);
+        video.setAttribute('height', height);
+        canvas.setAttribute('width', width);
+        canvas.setAttribute('height', height);
+        streaming = true;
     }, false);
     startCamera();
 
@@ -101,6 +116,7 @@ let takepicture = (canvas) => {
     let form = createNewForm(data)
     form.submit()
     form.remove()
+    document.location.replace('./camera.php?s=1');
 
 //    window.open(`../downloadImg.php?img=${data}`, "test", "height=500,width=500");
 }
