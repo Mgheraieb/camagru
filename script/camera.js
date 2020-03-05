@@ -1,7 +1,39 @@
 let camButton = document.getElementById("Scam")
 let video = document.querySelector("#videoElement");
+let test = $("#test")
+let test1 = $("#test1")
+let test2 = $("#test2")
+let mouve = false
 let width = 600;
 
+let testOffset = {
+    firstX : document.getElementById("test").offsetLeft,
+    firstY : document.getElementById("test").offsetTop,
+}
+let test1Offset = {
+    firstX : document.getElementById("test1").offsetLeft,
+    firstY : document.getElementById("test1").offsetTop,
+}
+let test2Offset = {
+    firstX : document.getElementById("test2").offsetLeft,
+    firstY : document.getElementById("test2").offsetTop,
+}
+
+test.bind("mousedown" , () => { mouve = $("#test");})
+test1.bind("mousedown", () => { mouve = $("#test1");})
+test2.bind("mousedown", () => { mouve = $("#test2");})
+
+
+$(document).bind('mousemove', function(e){
+    if (mouve != false) {
+        mouve.css({
+            left: e.pageX + 20,
+            top: e.pageY
+        });
+    }
+});
+
+$(document).bind("mouseup", ()=>{mouve = false;})
 
 camButton.addEventListener("click", ()=>{
     let value = parseInt(camButton.value);
@@ -20,10 +52,7 @@ camButton.addEventListener("click", ()=>{
     }
 })
 
-
-
 let startCamera = () =>{
-
     if (navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(function (stream) {
@@ -36,7 +65,7 @@ let startCamera = () =>{
 
 }
 
-
+window.addEventListener("DOMContentLoaded", (event) => {
     var url = new URL(window.location);
     var params = new URLSearchParams(url.search);
     let success = params.get("s")
@@ -48,6 +77,12 @@ let startCamera = () =>{
         div.innerHTML = text;
         camButton.before(div);
     }
+    let camerastart = params.get("c");
+    if (camerastart == '1'){
+        camButton.click();
+    }
+
+});
 
 let addElement = () =>{
     let link = document.createElement('a');
@@ -81,15 +116,56 @@ let addElement = () =>{
 
 }
 
-let createImageElement = (data) =>{
-    let img  = document.createElement("img")
-    img.src= data;
-    return img
+
+let getPositions = ()=>{
+
+
+    let t1 = document.getElementById("test");
+    let t2 = document.getElementById("test1")
+    let t3 = document.getElementById("test2")
+    let vid = document.getElementById("videoElement")
+
+    var Offset1 = {
+        top: t1.offsetTop - document.getElementById("videoElement").offsetTop,
+        left: t1.offsetLeft - document.getElementById("videoElement").offsetLeft,
+    }
+    if (Offset1.top > vid.offsetTop || Offset1.left > vid.offsetHeight || Offset1.top < 0 || Offset1.left < 0)
+        Offset1 = false
+
+    var Offset2 = {
+        top: t2.offsetTop - document.getElementById("videoElement").offsetTop,
+        left: t2.offsetLeft - document.getElementById("videoElement").offsetLeft,
+    }
+    if (Offset2.top > vid.offsetTop || Offset2.left > vid.offsetHeight || Offset2.top < 0 || Offset2.left < 0)
+        Offset2 = false
+
+    var Offset3 = {
+        top: t3.offsetTop - document.getElementById("videoElement").offsetTop,
+        left: t3.offsetLeft - document.getElementById("videoElement").offsetLeft,
+    }
+    if (Offset3.top > vid.offsetTop || Offset3.left > vid.offsetHeight || Offset3.top < 0 || Offset3.left < 0)
+        Offset3 = false
+
+    let x1 = (Offset1 != false) ? Offset1.left : -1
+    let y1 = (Offset1 != false) ? Offset1.top : -1
+
+    let x2 = (Offset2 != false) ? Offset2.left : -1
+    let y2 = (Offset2 != false) ? Offset2.top : -1
+
+    let x3 = (Offset3 != false) ? Offset3.left : -1
+    let y3 = (Offset3 != false) ? Offset3.top : -1
+
+
+    return {x1 : x1, y1 :y1, x2 : x2, y2 : y2, x3 : x3, y3 : y3}
+
 }
 
-
 let createNewForm = (data)=>{
-    let url = "./downloadImg.php"
+
+    let pos = getPositions();
+    console.log(pos)
+
+    let url = `./downloadImg.php?x1=${pos.x1}&y1=${pos.y1}&x2=${pos.x2}&y2=${pos.y2}&x3=${pos.x3}&y3=${pos.y3}`
     let form = document.createElement('form');
     document.body.appendChild(form);
     form.hidden = true
@@ -106,7 +182,6 @@ let createNewForm = (data)=>{
     return form
 }
 
-
 let takepicture = (canvas) => {
     console.log(canvas)
     canvas.width = width;
@@ -115,8 +190,11 @@ let takepicture = (canvas) => {
     let data = canvas.toDataURL('image/jpg');
     let form = createNewForm(data)
     form.submit()
-    form.remove()
-    document.location.replace('./camera.php?s=1');
+  /*  form.remove()
+    let reload = document.createElement("a");
+
+    reload.href = "./camera.php?s=1&c=1";
+    reload.click();*/
 
 //    window.open(`../downloadImg.php?img=${data}`, "test", "height=500,width=500");
 }

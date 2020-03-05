@@ -1,7 +1,6 @@
 <?php
 include_once("utils.php");
 include_once("../header.php");
-print_r(var_dump($_POST));
 
 if (!isset($_POST['commentaire']) || empty($_POST['commentaire']) || !isset($_SESSION['idUser']))
 {

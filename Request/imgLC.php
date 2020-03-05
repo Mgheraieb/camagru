@@ -7,7 +7,6 @@ if (isset($_POST['like']))
 {
     $idImg = htmlspecialchars($_POST['like']);
     $res = addLikeForImg($idImg, $bdd);
-    print_r(var_dump($res));
 }
 
 if (isset($_POST['unlike'])){

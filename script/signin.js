@@ -4,9 +4,6 @@ let button = document.getElementById("submit")
 let passDiv = document.getElementById("passDiv");
 let emailDiv = document.getElementById("emailDiv");
 
-
-console.log("?????????????")
-
 button.addEventListener("click", ()=> {
     console.log("uvgfhsdghssiudkj")
     let passwdErr = document.getElementById("errorpswd");

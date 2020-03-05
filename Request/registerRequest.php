@@ -40,7 +40,8 @@ if ($checkUserExist != false){
 }
 
 function registerUser($mail, $name, $pswd, $bdd){
-  //  $pswd = password_hash($pswd, PASSWORD_DEFAULT);
+    $pswd = password_hash($pswd, PASSWORD_DEFAULT);
+
     try {
         $req = $bdd->prepare('INSERT INTO user (name, mail, passwd) VALUES(?, ?, ?)');
         $req->execute(array($name, $mail, $pswd));

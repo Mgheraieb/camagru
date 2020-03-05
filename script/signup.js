@@ -1,10 +1,10 @@
-
 let inputname = document.getElementById("username");
 let inputEmail = document.getElementById("email");
 let inputVerifEmail = document.getElementById("emailVerif");
 let inputPasswd = document.getElementById("password");
 let inputverifPasswd = document.getElementById("passwordVerif");
 let button = document.getElementById("submit")
+
 
 
 let clicked = 0;

@@ -8,12 +8,10 @@ function redirectError($link, $time)
 
 
 function logUser($email, $username, $pass, $bdd){
-    echo $email;
-    echo $pass;
-    //$pass = password_hash($pass, PASSWORD_DEFAULT);
 
-    $req = $bdd->prepare('SELECT * FROM user WHERE (name = ? OR mail = ?) AND  passwd = ? ');
-    $req->execute(array($username, $email,  $pass));
+    $pass = password_hash($pass, PASSWORD_DEFAULT);
+    $req = $bdd->prepare('SELECT * FROM user WHERE (name = ? OR mail = ?)');
+    $req->execute(array($username, $email));
     $result = $req->fetch();
     $req->closeCursor();
     if ($result == false)
@@ -25,6 +23,22 @@ function logUser($email, $username, $pass, $bdd){
 
         header('LOCATION:../index.php');
     }
+}
+
+
+
+function getUserMailById($bdd){
+    if (!isset($_SESSION['idUser']) || empty($_SESSION['idUser']))
+        return false;
+    $id = $_SESSION['idUser'];
+    if(userExistID($id, $bdd) == false){
+        return false ;
+    }
+    $req = $bdd->prepare('SELECT mail FROM user WHERE id = ?');
+    $req->execute(array($id));
+    $res = $req->fetch();
+    $req->closeCursor();
+    return ($res['mail']);
 }
 
 

@@ -2,6 +2,15 @@
 include_once("header.php");
 include_once ("Request/imgLC.php");
 redirectUserLog();
+
+function diplaylastCommentaire($idImg, $bdd){
+    $req = $bdd->prepare('SELECT content FROM commentaire WHERE picture_id = ? ORDER BY date_post LIMIT 1');
+    $req->execute(array($idImg));
+    $res = $req->fetch();
+    $req->closeCursor();
+    return $res['content'];
+}
+
 function displayPicture($idImg, $link , $owner, $bdd){
     $nbLike = countImageLike($idImg, $bdd);
     $like = (imageAlreadyLiked($idImg, $bdd) == true) ? "unlike" : "like";
@@ -12,7 +21,9 @@ function displayPicture($idImg, $link , $owner, $bdd){
             <img src="'.$link.'" class="card-img-top" alt="Error loading Image">
             <div class="card-body">
                 <h5 class="card-title">Dernier commentaire</h5>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi et lobortis odio. Donec porttitor turpis id tortor semper sed.</p>
+                <p class="card-text">';
+   echo diplaylastCommentaire($idImg, $bdd);
+    echo '</p>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group"> 
                     ';

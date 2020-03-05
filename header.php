@@ -49,7 +49,7 @@ if (!((isset($_SESSION['logged']) && $_SESSION['logged'] == FALSE) || session_st
 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Mon compte</a>
+                    <a class="nav-link" href="./monCompte.php">Mon compte</a>
                 </li>
 
 
